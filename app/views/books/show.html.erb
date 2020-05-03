@@ -1,0 +1,77 @@
+<p id="notice">
+    <%= flash[:notice] %>
+</p>
+<div class="row">
+    <div class="col-xs-3">
+        <h2>User info</h2>
+            <% if @user.profile_image.present? %>
+                <%= attachment_image_tag @user, :profile_image, size:'100x100', class: "attachment user profile_image fallback" %>
+            <% else %>
+                <%= image_tag 'no_image.jpg', size: '100x100', class: 'attachment user profile_image fallback' %>
+            <% end %>
+        <table class="table">
+            <tbody>
+                <tr></tr> 
+                <tr>
+                    <th>name</th>
+                    <th><%= @user.name %></th>
+                </tr>
+                <tr>
+                    <th>introduction</th>
+                    <th><%= @user.introduction %></th>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <%= link_to '', user_path(current_user.id), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %> 
+        </div>
+
+        <h2>New book</h2>
+        <%= form_for(@book, url: books_path, html: { class: "new_user", id: "new_user" } ) do |f|%> 
+            <div class="field row">
+                <%= f.label :title %><br>
+                <%= f.text_field :title, class: "col-xs-12 book_title" %>
+            </div>
+
+            <div class="field row">
+                <%= f.label :Opinion %><br>
+                <%= f.text_area :body, class: "col-xs-12 book_body", id: "book_body" %>
+            </div>
+
+            <div class="actions row">
+                <%= f.submit "Create Book" , class: "btn btn-primary col-xs-12" %>   
+            </div>
+        <% end %>
+
+    </div>
+
+    <div class="col-xs-9">
+		<h2>Book detail</h2>
+		<table class="table">
+            <tbody>
+                <tr>
+                    <td>
+                        <%= link_to user_path(@user.id) do %>
+                            <%= attachment_image_tag @user, :profile_image, size:'40x40', class: "attachment user profile_image fallback" %><br>
+                            <%= @user.name %>
+                        <% end %>
+                    </td>
+                    <td> 
+                        <%= link_to @books.title, book_path(@books.id) %>
+                    </td>
+                    <td>
+                        <%= @books.body %>
+                    </td>
+                    <% if @books.user == current_user %>
+                    <td>
+                        <%= link_to 'Edit', edit_book_path(@books.id), class: "btn-sm btn-success" %>
+                    </td>
+                    <td>
+                        <%= link_to 'Destroy', book_path(@books.id), method: :delete, class: "btn-sm btn-danger", data: {confirm: "本当に削除しますか？"} %>
+                    </td>
+                    <% end %>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

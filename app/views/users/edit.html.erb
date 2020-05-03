@@ -1,0 +1,31 @@
+
+<p id="notice"></p>
+
+<% if @user.errors.any? %>
+    <%= @user.errors.count %>件のエラーが発生しました <br>
+    <% @user.errors.full_messages.each do |message| %>
+        <%= message %>
+    <% end %>
+<% end %>
+
+<h2>User info</h2>
+
+<%= form_for(@user, url: user_path(@user), html: { class: "new_user", id: "new_user" }, :method=>:patch ) do |f|%>
+    <div class="field row">
+        <%= f.label :name %><br>
+        <%= f.text_field :name, class: "user_name" %>
+    </div>
+
+    <div class="field row">
+        <%= f.attachment_field :profile_image %>
+    </div>
+
+    <div class="field row">
+        <%= f.label :introduction %><br>
+        <%= f.text_area :introduction, class: "user_introduction", id: "user_introduction" %>
+    </div>
+
+    <div class="actions row">
+        <%= f.submit "Update User" , class: "btn btn-primary" %>   
+    </div>
+<% end %>
