@@ -23,7 +23,7 @@
               <li><%= link_to "Books", books_path, class: "glyphicon glyphicon-book books" %></li>
               <li><%= link_to "logout", destroy_user_session_path, class: "glyphicon glyphicon-log-out logout", method: :delete %><li>
             <% else %>
-              <li><%= link_to "Home", home_index_path, class: "glyphicon glyphicon-home home" %></li>
+              <li><%= link_to "Home", root_path, class: "glyphicon glyphicon-home home" %></li>
               <li><%= link_to "About", home_about_path, class: "glyphicon glyphicon-link about" %></li>
               <li><%= link_to "sign up", new_user_registration_path, class: "glyphicon glyphicon-edit" %></li>
               <li><%= link_to "login", new_user_session_path, class: "glyphicon glyphicon-log-in sign_in"  %></li>

@@ -1,6 +1,9 @@
 class BooksController < ApplicationController
     before_action :authenticate_user!
+    before_action :login_check
     before_action :correct_user?, only: [:edit, :update]
+    
+    
     # Create Book buttonをクリック時のBook生成のアクション
     def create
         @book = Book.new(book_params)
@@ -34,10 +37,10 @@ class BooksController < ApplicationController
     end
     
     def update
-        book = Book.find(params[:id])
-        book.update(book_params)
-        if book.save
-            redirect_to book_path(book.id)
+        @book = Book.find(params[:id])
+        @book.update(book_params)
+        if @book.save
+            redirect_to book_path(@book.id)
             flash[:notice] = "You have updated book successfully."
         else
             render :edit
@@ -55,6 +58,13 @@ class BooksController < ApplicationController
         params.require(:book).permit(:title, :body)
     end
 
+    def login_check
+        unless user_signed_in?
+            flash[:alert] = "You need to sign in or sign up before continuing."
+            redirect_to new_user_session_path
+        end
+    end
+
     def correct_user?
         book = Book.find(params[:id])
         @book_user_id = current_user.id
@@ -64,5 +74,5 @@ class BooksController < ApplicationController
         unless @book_user_id == @access_user_id
             redirect_to books_path
         end
-    end
+    end    
 end

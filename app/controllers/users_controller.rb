@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :login_check
   before_action :correct_user?, only: [:edit, :update]
   
   def index
@@ -16,7 +17,6 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
-    @user_own = current_user
   end
 
   def update
@@ -36,11 +36,20 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :introduction, :profile_image)
   end
 
+  def login_check
+    unless user_signed_in?
+        flash[:alert] = "You need to sign in or sign up before continuing."
+        redirect_to new_user_session_path
+    end
+  end
+  
   def correct_user?
     @user = current_user.id
     @access_id = params[:id].to_i
       unless @user == @access_id
-        redirect_to books_path
+        redirect_to user_path(@user)
       end
   end
+
+  
 end
