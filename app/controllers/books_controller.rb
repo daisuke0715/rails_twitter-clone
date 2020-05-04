@@ -1,23 +1,24 @@
 class BooksController < ApplicationController
+    before_action :authenticate_user!
+    before_action :correct_user?, only: [:edit, :update]
     # Create Book buttonをクリック時のBook生成のアクション
     def create
-        book = Book.new(book_params)
-        book.user_id = current_user.id
-        if book.save
-            redirect_to book_path(book.id)
+        @book = Book.new(book_params)
+        @book.user_id = current_user.id
+        if @book.save
+            redirect_to book_path(@book)
             flash[:notice] = "You have creatad book successfully."
         else
-            @user = User.find(current_user.id)
-            @book = Book.new
-            @users = User.all
+            @user = current_user
             @books = Book.all
-            render "index"
+            @users = User.all
+            render :index
         end
     end
     # Book クリック時の (URL：/books) の表示のアクション
     def index
         @users = User.all
-        @user = User.find(current_user.id)
+        @user = current_user
         @book = Book.new
         @books = Book.all
     end
@@ -39,7 +40,7 @@ class BooksController < ApplicationController
             redirect_to book_path(book.id)
             flash[:notice] = "You have updated book successfully."
         else
-            render "edit"
+            render :edit
         end
     end
 
@@ -52,5 +53,16 @@ class BooksController < ApplicationController
     private
     def book_params
         params.require(:book).permit(:title, :body)
+    end
+
+    def correct_user?
+        book = Book.find(params[:id])
+        @book_user_id = current_user.id
+        @access_user_id = book.user_id
+        p @book_user_id
+        p @access_user_id
+        unless @book_user_id == @access_user_id
+            redirect_to books_path
+        end
     end
 end

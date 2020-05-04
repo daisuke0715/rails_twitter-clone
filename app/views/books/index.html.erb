@@ -2,11 +2,13 @@
     <%= flash[:notice] %>
 </p>
 
-<% if @book.errors.any? %>
-    <%= @book.errors.count %>件のエラーが発生しました
-    <% @book.errors.full_messages.each do |message| %>
-        <%= message %>
-    <% end %>
+<% if @book.errors.present? %>
+    <div class="error-message">
+        <h2><%= @book.errors.count %> error prohibited this obj from being saved: </h2><br>
+        <% @book.errors.full_messages.each do |message| %>
+            <li><%= message %> </li>
+        <% end %>
+    </div>
 <% end %>
 
 
@@ -37,7 +39,7 @@
         </div>
 
         <h2>New book</h2>
-        <%= form_for(@book, url: books_path, html: { class: "new_user", id: "new_user" } ) do |f|%> 
+        <%= form_for(@book, url: books_path, local: true, html: { class: "new_user", id: "new_user" } ) do |f|%> 
 
             <div class="field row">
                 <%= f.label :title %><br>

@@ -52,7 +52,12 @@
                 <tr>
                     <td>
                         <%= link_to user_path(@user.id) do %>
-                            <%= attachment_image_tag @user, :profile_image, size:'40x40', class: "attachment user profile_image fallback" %><br>
+                            <% if @user.profile_image.present? %>
+                                <%= attachment_image_tag @user, :profile_image, size:'40x40', class: "attachment user profile_image fallback" %> 
+                            <% else %>
+                                <%= image_tag 'no_image.jpg', size: '40x40', class: 'pull-left profile-thumb' %> 
+                            <% end %>
+                            <br>
                             <%= @user.name %>
                         <% end %>
                     </td>
@@ -62,6 +67,7 @@
                     <td>
                         <%= @books.body %>
                     </td>
+
                     <% if @books.user == current_user %>
                     <td>
                         <%= link_to 'Edit', edit_book_path(@books.id), class: "btn-sm btn-success" %>

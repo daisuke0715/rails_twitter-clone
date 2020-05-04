@@ -16,7 +16,7 @@
 
 
 
- @import "bootstrap-sprockets";
+@import "bootstrap-sprockets";
 @import "bootstrap";
 
 
@@ -41,6 +41,10 @@
 /**
  * Remove the margin in all browsers.
  */
+
+.error-message {
+  color: red;
+}
 
 body {
   margin: 0;

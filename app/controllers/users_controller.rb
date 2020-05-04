@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
+  before_action :correct_user?, only: [:edit, :update]
+  
   def index
     @users = User.all
-    @user = User.find(current_user.id)
+    @user = current_user
     @book = Book.new
     @books = Book.all
   end
@@ -14,7 +16,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
-    @user_own = User.find(current_user.id)
+    @user_own = current_user
   end
 
   def update
@@ -25,7 +27,7 @@ class UsersController < ApplicationController
       redirect_to user_path(@user.id)
       flash[:notice] = "You have updated user successfully."
     else
-      render "edit"
+      render :edit
     end
   end
 
@@ -34,4 +36,11 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :introduction, :profile_image)
   end
 
+  def correct_user?
+    @user = current_user.id
+    @access_id = params[:id].to_i
+      unless @user == @access_id
+        redirect_to books_path
+      end
+  end
 end

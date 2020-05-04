@@ -2,10 +2,12 @@
 <p id="notice"></p>
 
 <% if @user.errors.any? %>
-    <%= @user.errors.count %>件のエラーが発生しました <br>
-    <% @user.errors.full_messages.each do |message| %>
-        <%= message %>
-    <% end %>
+    <div class="error-message">
+        <h2><%= @user.errors.count %> error prohibited this obj from being saved: </h2><br>
+        <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+        <% end %>
+    </div>
 <% end %>
 
 <h2>User info</h2>
